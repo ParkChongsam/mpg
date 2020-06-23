@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>{{ a }}</h1>
+    <h2>Check mileage of you Car Instantly</h2>
+
+    <h3>Please enter details:</h3>
+    <br>
+    <form method="post" enctype="multipart/form-data" action="predictMPG">
+    
+ {% csrf_token %}
+ <div class="col-md-4 col-sm-4"><label for="fname">Cylinders:</label> </div> <input name="cylinderVal" type="text" value=1><br><br>
+ <div class="col-md-4 col-sm-4"><label for="lname">Displacement:</label> </div> <input type="text" id="lname" name="dispVal" value=2><br><br>
+ <div class="col-md-4 col-sm-4"><label for="fname">horsepower:</label> </div> <input type="text" id="fname" name="hrsPwrVal" value=2><br><br>
+ <div class="col-md-4 col-sm-4"><label for="lname">weight:</label> </div> <input type="text" id="lname" name="weightVal" value=2><br><br>
+ <div class="col-md-4 col-sm-4"><label for="fname">acceleration:</label></div>  <input type="text" id="fname" name="accVal" value=2><br><br>
+ <div class="col-md-4 col-sm-4"><label for="lname">odel:</label> </div> <input type="text" id="lname" name="modelVal" value=2><br><br>
+ <div class="col-md-4 col-sm-4"><label for="lname">origin:</label> </div> <input type="text" id="lname" name="originVal" value=2><br><br>
+ <br>
+ <input type="submit" value="Submit" ></div>
+
+
+</form>
+<br>
+    
+</body>
+</html>
