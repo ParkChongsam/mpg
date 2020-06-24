@@ -1,3 +1,4 @@
+from pymongo import MongoClient
 from django.shortcuts import render
 from django.http import HttpResponse
 import pandas as pd
@@ -5,6 +6,11 @@ import pandas as pd
 from sklearn.externals import joblib
 
 reloadedModel = joblib.load('./models/RFModelforMPG.pkl')
+
+# client = MongoClient()
+client = MongoClient('localhost', 27017)
+db = client['mpgDataBase']
+collectionD = db['mpgTable']
 
 
 def index(request):
@@ -44,5 +50,15 @@ def predictMPG(request):
 
     context = {'scoreval': scoreval, 'temp': temp}
     # 기본값을 입력후 결과와 함께 입력한 값이 보여지도록 하기 위해 'temp':temp 를 context에 넣어준다.
-
     return render(request, 'index.html', context)
+
+
+def viewDataBase(request):
+    countOfrow = collectionD.find().count()
+    context = {'countOfrow': countOfrow}
+
+    return render(request, 'viewDB.html', context)
+
+
+def updateDataBase(request):
+    return None
