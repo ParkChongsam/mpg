@@ -3,9 +3,11 @@ from django.shortcuts import render
 from django.http import HttpResponse
 import pandas as pd
 
+# Create your views here.
+
 from sklearn.externals import joblib
 
-reloadedModel = joblib.load('./models/RFModelforMPG.pkl')
+reloadModel = joblib.load('./models/RFModelforMPG.pkl')
 
 # client = MongoClient()
 client = MongoClient('localhost', 27017)
@@ -23,13 +25,12 @@ def index(request):
     temp['model_year'] = 70
     temp['origin'] = 1
     context = {'temp': temp}
-
     return render(request, 'index.html', context)
     # return HttpResponse({'a':1})
 
 
 def predictMPG(request):
-    # print(request)
+    print(request)
     if request.method == 'POST':
         temp = {}
         temp['cylinders'] = request.POST.get('cylinderVal')
@@ -45,20 +46,30 @@ def predictMPG(request):
         print(temp.keys(), temp2.keys())
         # del temp2['model_year']
 
-    testData = pd.DataFrame({'x': temp2}).transpose()
-    scoreval = reloadedModel.predict(testData)[0]
-
+    testDtaa = pd.DataFrame({'x': temp2}).transpose()
+    scoreval = reloadModel.predict(testDtaa)[0]
     context = {'scoreval': scoreval, 'temp': temp}
-    # 기본값을 입력후 결과와 함께 입력한 값이 보여지도록 하기 위해 'temp':temp 를 context에 넣어준다.
     return render(request, 'index.html', context)
 
 
 def viewDataBase(request):
     countOfrow = collectionD.find().count()
     context = {'countOfrow': countOfrow}
-
     return render(request, 'viewDB.html', context)
 
 
 def updateDataBase(request):
-    return None
+    temp = {}
+    temp['cylinders'] = request.POST.get('cylinderVal')
+    temp['displacement'] = request.POST.get('dispVal')
+    temp['horsepower'] = request.POST.get('hrsPwrVal')
+    temp['weight'] = request.POST.get('weightVal')
+    temp['acceleration'] = request.POST.get('accVal')
+    temp['model year'] = request.POST.get('modelVal')
+    temp['origin'] = request.POST.get('originVal')
+    temp['mpg'] = request.POST.get('mpgVal')
+    collectionD.insert_one(temp)
+    countOfrow = collectionD.find().count()
+
+    context = {'countOfrow': countOfrow}
+    return render(request, 'viewDB.html', context)
